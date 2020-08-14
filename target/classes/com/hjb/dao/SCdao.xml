@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hjb.dao.SCdao">
+    <select id="findAcountbyid" parameterType="int" resultType="Acount">
+		select * from acount where id=#{id}
+	</select>
+
+    <update id="updateAcount" parameterType="Acount">
+		update acount set money=#{money} where id=#{id}
+	</update>
+    <insert id="Addseletecourse" parameterType="SC">
+        insert into sc(cid,sid) values (#{cid},#{sid})
+    </insert>
+    <select id="Findcidbysid" resultType="String" parameterType="String">
+        select cid from sc where sid=#{sid}
+    </select>
+    <delete id="deletescbysid" parameterType="SC">
+        delete from sc where cid=#{cid} and sid=#{sid}
+    </delete>
+    <select id="Findsidbycid" parameterType="String" resultType="String">
+        select sid from sc where cid=#{cid}
+    </select>
+    <update id="Updategradeall" parameterType="SC">
+        update sc set grade=#{grade} where cid=#{cid} and sid=#{sid}
+    </update>
+    <select id="Findgradeandc" parameterType="String" resultMap="gradeMap">
+        select grade,cid from sc where sid=#{sid}
+    </select>
+    <resultMap id="gradeMap" type="SC">
+        <id column="cid" property="cid"></id>
+        <result column="grade" property="grade"></result>
+        <collection property="courses" column="cid" select="coursese"></collection>
+    </resultMap>
+    <select id="coursese" parameterType="String" resultType="Course">
+        select * from course where id=#{cid}
+    </select>
+    <select id="Findgradeands" parameterType="String" resultMap="gradeeMap">
+        select grade,sid from sc where cid=#{cid}
+    </select>
+    <resultMap id="gradeeMap" type="SC">
+        <id column="sid" property="sid"></id>
+        <result column="grade" property="grade"></result>
+        <collection property="student" column="sid" select="studentse"></collection>
+    </resultMap>
+    <select id="studentse" parameterType="String" resultType="Student">
+        select * from student where id=#{sid}
+    </select>
+    <select id="countstudent" parameterType="String" resultType="SC">
+        select * from sc where cid in (select id from course where name=#{name})
+    </select>
+</mapper>

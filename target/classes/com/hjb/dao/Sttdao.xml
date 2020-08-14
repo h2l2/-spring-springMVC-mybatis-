@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hjb.dao.Sttdao">
+    <select id="findAcountbyid" parameterType="int" resultType="Acount">
+		select * from acount where id=#{id}
+	</select>
+
+    <update id="updateAcount" parameterType="Acount">
+		update acount set money=#{money} where id=#{id}
+	</update>
+	<insert id="Addstt" parameterType="Stt">
+		insert into stt(ttid,sid,status) values (#{ttid},#{sid},#{status})
+	</insert>
+	<delete id="Deletesst" parameterType="String">
+		delete from stt where ttid=#{ttid}
+	</delete>
+	<update id="Updatestt" parameterType="Stt">
+		update stt set status=#{status} where sid=#{sid}and ttid=#{ttid}
+	</update>
+	<update id="Updatetegrade" parameterType="Stt">
+		update stt set grade=#{grade} where sid=#{sid}and ttid=#{ttid}
+	</update>
+	<select id="Findgrade" parameterType="Stt" resultType="Stt">
+		select tt.grade from stt tt where tt.ttid=#{ttid} and tt.sid=#{sid}
+	</select>
+	<delete id="Deletestt" parameterType="Stt">
+		delete from stt where ttid=#{ttid}and sid=#{sid}
+	</delete>
+</mapper>

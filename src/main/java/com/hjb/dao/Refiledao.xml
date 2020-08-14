@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hjb.dao.Refiledao">
+    <select id="findAcountbyid" parameterType="int" resultType="Acount">
+		select * from acount where id=#{id}
+	</select>
+
+    <update id="updateAcount" parameterType="Acount">
+		update acount set money=#{money} where id=#{id}
+	</update>
+    <insert id="addrefile" parameterType="Refile">
+        insert into refile(sid,tid,name,uptime,about,status) values (#{sid},#{tid},#{name},#{uptime},#{about},#{status})
+    </insert>
+    <select id="findrefilebytid" parameterType="String" resultMap="refileMap">
+        select * from refile where tid=#{tid}
+    </select>
+    <resultMap id="refileMap" type="Refile">
+        <id column="id" property="id"></id>
+        <result column="tid" property="tid"></result>
+        <result column="sid" property="sid"></result>
+        <result column="name" property="name"></result>
+        <result column="uptime" property="uptime"></result>
+        <result column="about" property="about"></result>
+        <result column="status" property="status"></result>
+        <collection property="teacher" column="tid" select="tselect"></collection>
+    </resultMap>
+    <select id="tselect" parameterType="String" resultType="Teacher">
+        select t.name from teacher t where id=#{tid}
+    </select>
+    <delete id="deleterefilebyid" parameterType="Refile">
+        delete from refile where id=#{id}
+    </delete>
+    <select id="findrefilebysid" parameterType="String" resultMap="refilesMap">
+         select * from refile where sid=#{sid}
+    </select>
+    <resultMap id="refilesMap" type="Refile">
+        <id column="id" property="id"></id>
+        <result column="tid" property="tid"></result>
+        <result column="sid" property="sid"></result>
+        <result column="name" property="name"></result>
+        <result column="uptime" property="uptime"></result>
+        <result column="about" property="about"></result>
+        <result column="status" property="status"></result>
+        <collection property="student" column="sid" select="sselect"></collection>
+    </resultMap>
+    <select id="sselect" parameterType="String" resultType="Student">
+        select s.name from student s where id=#{sid}
+    </select>
+    <select id="findrefileall" resultMap="refileallMap">
+        select * from refile
+    </select>
+    <resultMap id="refileallMap" type="Refile">
+        <id column="id" property="id"></id>
+        <result column="tid" property="tid"></result>
+        <result column="sid" property="sid"></result>
+        <result column="name" property="name"></result>
+        <result column="uptime" property="uptime"></result>
+        <result column="about" property="about"></result>
+        <result column="status" property="status"></result>
+        <collection property="student" column="sid" select="sselect"></collection>
+        <collection property="teacher" column="tid" select="tselect"></collection>
+    </resultMap>
+    <update id="updaterefilestatus" parameterType="Refile">
+        update refile set status=#{status} where id=#{id}
+    </update>
+</mapper>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hjb.dao.Coursedao">
+    <select id="Findcoursebyid" parameterType="String" resultType="Course">
+		select * from course where id=#{id}
+	</select>
+    <select id="Findcourseall" resultType="Course">
+        select * from course
+    </select>
+    <update id="Updatecourse" parameterType="Course">
+		update course
+		set name=#{name},team=#{team},credit=#{credit},batch=#{batch},studytime=#{studytime},teacherid=#{teacherid}
+		where id=#{id}
+	</update>
+    <insert id="Addcourse" parameterType="Course">
+        insert into course(id,name,team,credit,batch,studytime,teacherid)
+        values (#{id},#{name},#{team},#{credit},#{batch},#{studytime},#{teacherid})
+    </insert>
+    <delete id="Deletecourse" parameterType="String">
+        delete from course where id=#{id}
+    </delete>
+    <select id="Findallcourseandt" resultMap="courseMap" parameterType="String">
+        select c.id,c.name,c.team,c.credit,c.batch,c.studytime,c.teacherid from course c
+        where c.id not in (select cid from sc where sid=#{sid})
+    </select>
+    <resultMap id="courseMap" type="Course">
+        <id column="id" property="id"></id>
+        <result column="name" property="name"></result>
+        <result column="team" property="team"></result>
+        <result column="credit" property="credit"></result>
+        <result column="batch" property="batch"></result>
+        <result column="studytime" property="studytime"></result>
+        <result column="teacherid" property="teacherid"></result>
+        <collection property="teacher" column="teacherid" select="selectcandt"></collection>
+    </resultMap>
+    <select id="selectcandt" parameterType="String" resultType="Teacher">
+        select t.name from teacher t where t.id=#{teacherid}
+    </select>
+    <select id="Findallcoursebycid" resultMap="courseMap">
+        select c.id,c.name,c.team,c.credit,c.batch,c.studytime,c.teacherid from course c
+        where c.id in 
+        <foreach collection="list" item="cid" index="index" open="(" close=")" separator=",">
+            #{cid}
+        </foreach>
+    </select>
+    <select id="Findteacherallcourse" parameterType="String" resultType="Course">
+        select * from course where teacherid=#{tid}
+    </select>
+    <select id="Findteacheridbycid" parameterType="String" resultType="String">
+        select teacherid from course where id=#{cid}
+    </select>
+    <select id="Findcoursebyname" parameterType="String" resultType="String">
+        select id from course where name=#{name}
+    </select>
+    <select id="Findcourseallbyname" parameterType="String" resultType="Course">
+        select * from course where name=#{name}
+    </select>
+</mapper>

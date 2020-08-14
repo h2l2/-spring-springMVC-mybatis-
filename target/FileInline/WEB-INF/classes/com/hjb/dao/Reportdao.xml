@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hjb.dao.Reportdao">
+    <select id="findAcountbyid" parameterType="int" resultType="Acount">
+		select * from acount where id=#{id}
+	</select>
+
+    <update id="updateAcount" parameterType="Acount">
+		update acount set money=#{money} where id=#{id}
+	</update>
+    <insert id="Addreport" parameterType="Report">
+        insert into report(name,sid,cid,tid,ttid) values (#{name},#{sid},#{cid},#{tid},#{ttid})
+    </insert>
+    <select id="Findroportbytest" parameterType="Stt" resultMap="reportMap">
+        select r.* from report r where r.sid=#{sid} and r.ttid=#{ttid}
+    </select>
+    <resultMap id="reportMap" type="Report">
+        <id column="id" property="id"></id>
+        <result column="name" property="name"></result>
+        <result column="sid" property="sid"></result>
+        <result column="cid" property="cid"></result>
+        <result column="ttid" property="ttid"></result>
+        <result column="tid" property="tid"></result>
+        <association property="student" column="sid" select="studentse"></association>
+        <association property="course" column="cid" select="coursese"></association>
+        <association property="test" column="ttid" select="testse"></association>
+        <association property="teacher" column="tid" select="teacherse"></association>
+    </resultMap>
+    <select id="studentse" parameterType="String" resultType="Student">
+        select s.name from student s where s.id=#{sid}
+    </select>
+    <select id="coursese" parameterType="String" resultType="Course">
+        select c.name from course c where c.id=#{cid}
+    </select>
+    <select id="testse" parameterType="String" resultType="Test">
+        select tt.name from test tt where tt.id=#{ttid}
+    </select>
+    <select id="teacherse" parameterType="String" resultType="Teacher">
+        select t.name from teacher t where t.id=#{tid}
+    </select>
+    <update id="Updatereportname" parameterType="Report">
+        update report set name=#{name} where id=#{id}
+    </update>
+</mapper>

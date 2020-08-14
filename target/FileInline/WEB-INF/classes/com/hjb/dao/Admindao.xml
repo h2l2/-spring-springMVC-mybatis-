@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hjb.dao.Admindao">
+    <select id="FindAdminbyid" parameterType="String" resultType="Admin">
+		select * from admin where id=#{id}
+	</select>
+
+    <update id="updateAcount" parameterType="Acount">
+		update acount set money=#{money} where id=#{id}
+	</update>
+</mapper>

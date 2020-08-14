@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hjb.dao.Studentdao">
+    <select id="FindstudentbyId" parameterType="String" resultType="Student">
+		select * from student where id=#{id}
+	</select>
+    <select id="Findstudentall" resultType="Student">
+        select * from student
+    </select>
+    <update id="Updatestudentpd" parameterType="hashmap">
+		update student set password=#{password} where id=#{id}
+	</update>
+    <insert id="Addstudent" parameterType="Student">
+        insert into student(id,name,professiona,password,phonenumber) values (#{id},#{name},#{professiona},#{password},#{phonenumber})
+    </insert>
+    <delete id="Deletestudent" parameterType="String">
+        delete from student where id=#{id}
+    </delete>
+    <select id="Findstudentbycid" parameterType="String" resultType="Student">
+        select s.id,s.name,s.professiona,s.phonenumber from student s
+        where s.id in(select sid from sc where cid=#{cid})
+    </select>
+    <select id="Findstudentbyttid" parameterType="String" resultMap="studentMap">
+        select s.id,s.name,s.professiona,s.phonenumber from student s
+        where s.id in(select sid from stt where ttid=#{ttid})
+    </select>
+    <resultMap id="studentMap" type="Student">
+        <id column="id" property="id"></id>
+        <result column="name" property="name"></result>
+        <result column="professiona" property="professiona"></result>
+        <result column="phonenumber" property="phonenumber"></result>
+        <collection property="stts" column="id" select="selectst"></collection>
+    </resultMap>
+    <select id="selectst" parameterType="String" resultType="Stt">
+        select st.ttid,st.status from stt st where st.sid=#{id}
+    </select>
+    <update id="Updatestudent" parameterType="Student">
+        update student set name=#{name},professiona=#{professiona},phonenumber=#{phonenumber},dormitory=#{dormitory} where id=#{id}
+    </update>
+</mapper>

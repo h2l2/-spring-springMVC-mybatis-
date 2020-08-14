@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hjb.dao.Announcemedao">
+    <select id="findAcountbyid" parameterType="int" resultType="Acount">
+		select * from acount where id=#{id}
+	</select>
+
+    <update id="updateAcount" parameterType="Acount">
+		update acount set money=#{money} where id=#{id}
+	</update>
+    <insert id="addannounceme" parameterType="Announceme">
+        insert into announceme(name,statime,content) values (#{name},#{statime},#{content})
+    </insert>
+    <select id="findannouncemeall" resultType="Announceme">
+        select * from announceme
+    </select>
+    <delete id="deleteannounceme" parameterType="Announceme">
+        delete from announceme where id=#{id}
+    </delete>
+    <select id="findfindannouncemebyid" parameterType="int" resultType="Announceme">
+        select * from announceme where id=#{id}
+    </select>
+    <update id="updateannounceme" parameterType="Announceme">
+        update announceme set name=#{name},content=#{content} where id=#{id}
+    </update>
+</mapper>

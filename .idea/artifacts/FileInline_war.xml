@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="FileInline:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>FileInline</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="FileInline.war">
+      <element id="artifact" artifact-name="FileInline:war exploded" />
+    </root>
+  </artifact>
+</component>

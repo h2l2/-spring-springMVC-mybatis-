@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hjb.dao.Testdao">
+    <select id="findAcountbyid" parameterType="int" resultType="Acount">
+		select * from acount where id=#{id}
+	</select>
+
+    <update id="updateAcount" parameterType="Acount">
+		update acount set money=#{money} where id=#{id}
+	</update>
+    <insert id="Addtest" parameterType="Test">
+		insert into test(id,name,statime,endtime,filepath,cid,tid,percentage)values (#{id},#{name},#{statime},#{endtime},#{filepath},#{cid},#{tid},#{percentage})
+	</insert>
+    <select id="Findtestallbyid" parameterType="String" resultType="Test">
+		select * from test where id=#{id}
+	</select>
+    <select id="Findtestallbytid" parameterType="String" resultType="Test">
+        select * from test where tid=#{tid}
+    </select>
+    <select id="Findtestandt" parameterType="String" resultMap="testMap">
+		select t.* from test t where t.id in (select ttid from stt where sid=#{sid})
+	</select>
+    <resultMap id="testMap" type="Test">
+        <id column="id" property="id"></id>
+        <result column="name" property="name"></result>
+        <result column="statime" property="statime"></result>
+        <result column="endtime" property="endtime"></result>
+        <result column="filepath" property="filepath"></result>
+        <result column="cid" property="cid"></result>
+        <result column="tid" property="tid"></result>
+        <result column="percentage" property="percentage"></result>
+        <collection property="teacher" column="tid" select="selectt"></collection>
+        <collection property="stts" column="id" select="selectst"></collection>
+    </resultMap>
+    <select id="selectt" parameterType="String" resultType="Teacher">
+		select t.name from teacher t where t.id=#{tid}
+	</select>
+    <select id="selectst" parameterType="String" resultType="Stt">
+		select s.status,s.sid from stt s where s.ttid=#{id}
+	</select>
+    <delete id="Delecttest" parameterType="String">
+		delete from test where id=#{id}
+	</delete>
+    <update id="Updatetest" parameterType="Test">
+		update test
+		set name=#{name},statime=#{statime},endtime=#{endtime},filepath=#{filepath},cid=#{cid},tid=#{tid},percentage=#{percentage}
+		where id=#{id}
+	</update>
+    <select id="Findtestandtt" parameterType="String" resultMap="testtMap">
+        select te.name,te.percentage,te.id from test te where te.cid=#{cid}
+    </select>
+    <resultMap id="testtMap" type="Test">
+        <id column="id" property="id"></id>
+        <result column="name" property="name"></result>
+        <result column="percentage" property="percentage"></result>
+        <collection property="stts" column="id" select="sttse"></collection>
+    </resultMap>
+    <select id="sttse" parameterType="String" resultType="Stt">
+		select s.grade,s.sid from stt s where s.ttid=#{id}
+	</select>
+    <select id="Findtestbycid" parameterType="String" resultType="Test">
+        select t.id from test t where cid=#{cid}
+    </select>
+</mapper>
